@@ -1,17 +1,15 @@
 package pl.jordii.todoapp.repository;
 
-import pl.jordii.todoapp.model.TaskGroup;
+import pl.jordii.todoapp.model.Project;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface TaskGroupRepository {
-    List<TaskGroup> findAll();
+public interface ProjectRepository {
+    List<Project> findAll();
 
-    Optional<TaskGroup> findById(Long id);
+    Optional<Project> findById(Long id);
 
-    TaskGroup save(TaskGroup entity);
-
-    boolean existsByDoneIsFalseAndProject_Id(Long id);
+    Project save(Project entity);
 
 }

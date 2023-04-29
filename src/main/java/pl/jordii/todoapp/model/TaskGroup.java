@@ -1,37 +1,37 @@
 package pl.jordii.todoapp.model;
 
 import jakarta.persistence.*;
+
 import org.hibernate.validator.constraints.NotBlank;
 
-import java.time.LocalDateTime;
+import java.util.Set;
 
 
 @Entity
-@Table(name = "tasks")
-public class Task {
+@Table(name = "task_groups")
+public class TaskGroup {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Task's description must not be empty")
+    @NotBlank(message = "Task group's description must not be empty")
     private String description;
     private boolean done;
-    private LocalDateTime deadline;
-    @Embedded
-    private Audit audit = new Audit();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "taskGroup")
+    private Set<Task> tasks;
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
 
-    public void updateFrom(final Task sourceTask) {
-        description = sourceTask.description;
-        done = sourceTask.done;
-        deadline = sourceTask.deadline;
+    public TaskGroup() {
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
@@ -39,19 +39,11 @@ public class Task {
         return done;
     }
 
-    public void setDone(boolean done) {
+    public void setDone(final boolean done) {
         this.done = done;
     }
 
-    public LocalDateTime getDeadline() {
-        return deadline;
-    }
-
-    public void setDeadline(LocalDateTime deadline) {
-        this.deadline = deadline;
-    }
-
-    public void setId(Long id) {
+    void setId(final Long id) {
         this.id = id;
     }
 
@@ -59,5 +51,19 @@ public class Task {
         return id;
     }
 
+    public Set<Task> getTasks() {
+        return tasks;
+    }
 
+    public void setTasks(final Set<Task> tasks) {
+        this.tasks = tasks;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(final Project project) {
+        this.project = project;
+    }
 }
